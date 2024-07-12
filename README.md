@@ -9,3 +9,7 @@
 # package dependencies
 
 `@types/k6`, `k6-html-result-reporter`, `papaparse`
+
+# To install dependencies here write
+
+`npm i`
