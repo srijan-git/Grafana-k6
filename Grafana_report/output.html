@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Performance Test · Results</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" crossorigin="anonymous">
+    <link rel="icon" href="https://k6.io/images/k6-cover-image.png" type="image/png">
+    <meta name="theme-color" content="#712cf9">
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+        .b-example-divider {
+            width: 100%;
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+        .btn-bd-primary {
+            --bd-violet-bg: #712cf9;
+            --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+            --bs-btn-font-weight: 600;
+            --bs-btn-color: var(--bs-white);
+            --bs-btn-bg: var(--bd-violet-bg);
+            --bs-btn-border-color: var(--bd-violet-bg);
+            --bs-btn-hover-color: var(--bs-white);
+            --bs-btn-hover-bg: #6528e0;
+            --bs-btn-hover-border-color: #6528e0;
+            --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+            --bs-btn-active-color: var(--bs-btn-hover-color);
+            --bs-btn-active-bg: #5a23c8;
+            --bs-btn-active-border-color: #5a23c8;
+        }
+        .bd-mode-toggle {
+            z-index: 1500;
+        }
+        .bd-mode-toggle .dropdown-menu .active .bi {
+            display: block !important;
+        }
+        .bi {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+        }
+        @media (min-width: 768px) {
+            .sidebar .offcanvas-lg {
+                position: -webkit-sticky;
+                position: sticky;
+                top: 48px;
+            }
+            .navbar-search {
+                display: block;
+            }
+        }
+        .sidebar .nav-link {
+            font-size: .875rem;
+            font-weight: 500;
+        }
+        .sidebar .nav-link.active {
+            color: #2470dc;
+        }
+        .sidebar-heading {
+            font-size: .75rem;
+        }
+        .navbar-brand {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+        }
+        .navbar .form-control {
+            padding: .75rem 1rem;
+        }
+    </style>
+</head>
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+        <symbol id="check2" viewBox="0 0 16 16">
+            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+        </symbol>
+        <symbol id="circle-half" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+        </symbol>
+        <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+            <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+            <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+        </symbol>
+        <symbol id="sun-fill" viewBox="0 0 16 16">
+            <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+        </symbol>
+    </svg>
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+        <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
+            <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
+                <use href="#circle-half"></use>
+            </svg>
+            <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+            <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                    <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em"><use href="#sun-fill"></use></svg>
+                    Light
+                    <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+                    <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em"><use href="#moon-stars-fill"></use></svg>
+                    Dark
+                    <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+                    <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em"><use href="#circle-half"></use></svg>
+                    Auto
+                    <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+                </button>
+            </li>
+        </ul>
+    </div>
+    <header class="sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none">
+                <svg style="vertical-align:middle" width="50" height="45" viewBox="0 0 50 45" fill="none" class="footer-module--logo--_lkxx">
+                    <path d="M31.968 34.681a2.007 2.007 0 002.011-2.003c0-1.106-.9-2.003-2.011-2.003a2.007 2.007 0 00-2.012 2.003c0 1.106.9 2.003 2.012 2.003z" fill="#7D64FF"></path>
+                    <path d="M39.575 0L27.154 16.883 16.729 9.31 0 45h50L39.575 0zM23.663 37.17l-2.97-4.072v4.072h-2.751V22.038l2.75 1.989v7.66l3.659-5.014 2.086 1.51-3.071 4.21 3.486 4.776h-3.189v.001zm8.305.17c-2.586 0-4.681-2.088-4.681-4.662 0-1.025.332-1.972.896-2.743l4.695-6.435 2.086 1.51-2.239 3.07a4.667 4.667 0 013.924 4.6c0 2.572-2.095 4.66-4.681 4.66z" fill="#7D64FF"></path>
+                </svg>
+                <span class="fs-4">&nbsp;Performance Test Results</span>
+            </a>       
+            <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#summary"><i class="bi-speedometer"></i> Summary</a>
+                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#charts"><i class="bi-graph-up"></i> Charts</a>
+                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#transactions"><i class="bi-list"></i> Transactions</a>
+            </nav>
+        </div>
+    </header>
+    <div class="container-fluid">
+        <main>
+            <section id="summary">
+                <h2 class="display-6 text-center mb-4">Summary</h2>
+                <p><label class="fw-bold">Test:&nbsp;</label>k6 Performance Test Report - 2024-07-12</p>
+                <p><label class="fw-bold">Time:&nbsp;</label>2024-07-12 19:49:48 - 2024-07-12 19:49:50</p>
+                <div class="row row-cols-1 row-cols-md-4 mb-4 text-center">
+                    <div class="col">
+                        <div class="card mb-3 border-primary" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-3">
+                                    <i class="bi-globe" style="font-size: 6rem; color: blue"></i>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body text-primary">
+                                        <h5 class="card-title">Total Requests</h5>
+                                        <p class="card-text fs-1">2</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card mb-3 border-success" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-3">
+                                    <i class="bi-check-circle" style="font-size: 6rem; color: green"></i>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body text-success">
+                                        <h5 class="card-title">Passed Requests</h5>
+                                        <p class="card-text fs-1">2</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card mb-3 border-danger" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-3">
+                                    <i class="bi-x-circle" style="font-size: 6rem; color: red"></i>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body text-danger">
+                                        <h5 class="card-title">Failed Requests</h5>
+                                        <p class="card-text fs-1">0</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card mb-3 border-secondary" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-3">
+                                    <i class="bi-people" style="font-size: 6rem; color: gray"></i>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body text-secondary">
+                                        <h5 class="card-title">Total VUsers</h5>
+                                        <p class="card-text fs-1">1</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered" id="summaryList" cellspacing="0" width="100%">
+                        <thead class="table-primary">
+                        <tr>
+                            <th class="text-center">Group</th>
+                            <th class="text-center">Transaction</th>
+                            <th class="text-center">Min</th>
+                            <th class="text-center">Mean</th>
+                            <th class="text-center">Avg</th>
+                            <th class="text-center">Max</th>
+                            <th class="text-center">90th%</th>
+                            <th class="text-center">95th%</th>
+                            <th class="text-center">99th%</th>
+                            <th class="text-center">Std Dev</th>
+                            <th class="text-center">Pass</th>
+                            <th class="text-center">Fail</th>
+                        </tr>
+                        </thead>                    
+                    </table>
+                </div>
+            </section>
+            <section id="charts">
+                <h2 class="display-6 text-center mb-4">Charts</h2>
+                <div class="row">
+                    <div class="col col-lg-12">
+                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                            <div>
+                                <div id="responseTimesChart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-lg-6">
+                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                            <div>
+                                <div id="histogramChart"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-lg-3">
+                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                            <div>
+                                <div id="txnPercentageChart"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-lg-3">
+                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                            <div>
+                                <div id="httpStatusPercentageChart"></div>
+                            </div>
+                        </div>
+                    </div>             
+                </div>
+                <div class="row">
+                    <div class="col col-lg-6">
+                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                            <div>
+                                <div id="usersCountChart"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-lg-6">
+                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                            <div>
+                                <div id="dataSentReceivedChart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-lg-12">
+                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                            <div>
+                                <div id="httpRequestsChart"></div>
+                            </div>
+                        </div>
+                    </div>             
+                </div>            
+            </section>
+            <section id="transactions">
+                <h2 class="display-6 text-center mb-4">Transactions</h2>            
+                <ul class="nav nav-tabs" role="tablist" id="transactionsTabs">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="transactionListTab" data-bs-toggle="tab" href="#transactionListTabContent" role="tab" aria-controls="simple-tabpanel-0" aria-selected="true">Transactions List</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="transactionRecordsTab" data-bs-toggle="tab" href="#transactionRequestsTabContent" role="tab" aria-controls="simple-tabpanel-1" aria-selected="false">Transaction Requests</button>
+                    </li>
+                </ul>
+                <div class="tab-content pt-5" id="transactionsTabContent">
+                    <div class="tab-pane active" id="transactionListTabContent" role="tabpanel" aria-labelledby="transactionListTab">
+                        <div class="col col-lg-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered display" id="transactionsList" cellspacing="0" width="100%">
+                                    <thead class="table-info">
+                                        <tr>
+                                            <th></th>
+                                            <th class="text-center">Timestamp</th>
+                                            <th class="text-center">Scenario</th>
+                                            <th class="text-center">Group</th>                        
+                                            <th class="text-center">Transaction</th>
+                                            <th class="text-center">Resp Time</th>
+                                            <th class="text-center">Status</th>
+                                        </tr>
+                                    </thead>                                  
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="transactionRequestsTabContent" role="tabpanel" aria-labelledby="transactionRecordsTab">
+                        <div class="col col-lg-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered" id="transactionRecordsList" cellspacing="0" width="100%">
+                                    <thead class="table-info">
+                                        <tr>
+                                            <th class="text-center">Timestamp</th>
+                                            <th class="text-center">Scenario</th>
+                                            <th class="text-center">Group</th>   
+                                            <th class="text-center">Name</th>                        
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Duration</th>
+                                            <th class="text-center">Blocked</th>
+                                            <th class="text-center">Connection</th>
+                                            <th class="text-center">TLS Handshaking</th>
+                                            <th class="text-center">Sending</th>
+                                            <th class="text-center">Waiting</th>
+                                            <th class="text-center">Receiving</th>
+                                            <th class="text-center">Failed</th>
+                                        </tr>
+                                    </thead>                                  
+                                </table>
+                            </div>   
+                        </div>        
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <footer class="pt-4 my-md-5 pt-md-5 border-top">
+        <div class="row">
+            <div class="col-12 col-md">
+                <small class="d-block mb-3 text-body-secondary">
+                    &copy; 2024 - <a href="https://www.npmjs.com/package/k6-html-result-reporter" class="text-decoration-none" target="_blank">k6 HTML Result Reporter</a> 
+                    · By <a href="https://github.com/pkmleo" class="text-decoration-none" target="_blank">Pramod Moudgalya</a> 
+                    · Template Design by <a href="https://getbootstrap.com/" class="text-decoration-none" target="_blank">Bootstrap</a> 
+                    · Charts by <a href="https://plotly.com/javascript/" class="text-decoration-none" target="_blank">plotly</a>
+                </small>
+            </div>
+        </div>
+    </footer>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://getbootstrap.com/docs/5.3/assets/js/color-modes.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src='https://cdn.plot.ly/plotly-2.27.0.min.js'></script>
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <script type="text/javascript">
+        // Summary table
+        const summaryTable = new DataTable('#summaryList', {
+            data: [{"group":"Default","name":"http://test.k6.io","minimum":"237.36","mean":"237.36","average":"237.36","maximum":"237.36","percentile90":"237.36","percentile95":"237.36","percentile99":"237.36","stdDev":"0.00","passedTxns":1,"failedTxns":0},{"group":"Default","name":"https://test.k6.io/","minimum":"240.57","mean":"240.57","average":"240.57","maximum":"240.57","percentile90":"240.57","percentile95":"240.57","percentile99":"240.57","stdDev":"0.00","passedTxns":1,"failedTxns":0}],
+            columns: [
+                { 
+                    data: 'group',
+                    render: function(data, type, row) {
+                        return (data === '' || null || undefined) ? 'Default' : data.replace('::', '')
+                    }
+                },
+                { 
+                    data: 'name' 
+                },
+                { 
+                    data: 'minimum',                
+                    className: 'text-end'
+                },
+                { 
+                    data: 'mean',                
+                    className: 'text-end'
+                },
+                { 
+                    data: 'average',                
+                    className: 'text-end'
+                },
+                { 
+                    data: 'maximum',                
+                    className: 'text-end'
+                },
+                { 
+                    data: 'percentile90',                
+                    className: 'text-end'
+                },
+                { 
+                    data: 'percentile95',                
+                    className: 'text-end'
+                },
+                { 
+                    data: 'percentile99',                
+                    className: 'text-end'
+                },
+                { 
+                    data: 'stdDev',                
+                    className: 'text-end'
+                },
+                { 
+                    data: 'passedTxns',                
+                    className: 'text-end'
+                },
+                { 
+                    data: 'failedTxns',                
+                    className: 'text-end'
+                }
+            ],  
+            language: {
+                paginate: {
+                    next: '&#8594;',
+                    previous: '&#8592;'
+                }
+            },
+            buttons: [
+                {
+                    extend: 'csv',
+                    split: [ 'pdf', 'excel'],
+                }
+            ]
+        });
+        summaryTable.buttons().container().appendTo( '#summaryList_wrapper .col-md-6:eq(0)');
+        
+        // Listen for bootstrap tab change
+        document.querySelectorAll('button[data-bs-toggle="tab"]').forEach((el) => {
+            el.addEventListener('shown.bs.tab', () => {
+                DataTable.tables({ visible: true, api: true }).columns.adjust();
+            });
+        });
+        
+        // Transactions list table
+        let transactionsTable = new DataTable('#transactionsList', {
+            data: [{"metric_name":"http_req_duration","timestamp":"1720813788","metric_value":"237.356100","check":"","error":"","error_code":"","expected_response":"true","group":"","method":"GET","name":"http://test.k6.io","proto":"HTTP/1.1","scenario":"default","service":"","status":"308 - Permanent Redirect","subproto":"","tls_version":"","url":"http://test.k6.io","extra_tags":"","metadata":"","id":1},{"metric_name":"http_req_duration","timestamp":"1720813789","metric_value":"240.570500","check":"","error":"","error_code":"","expected_response":"true","group":"","method":"GET","name":"https://test.k6.io/","proto":"HTTP/1.1","scenario":"default","service":"","status":"200 - OK","subproto":"","tls_version":"tls1.3","url":"https://test.k6.io/","extra_tags":"","metadata":"","id":2}],
+            responsive: true,
+            columns: [
+                {
+                    className: 'dt-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: ''
+                },
+                { 
+                    data: 'timestamp', 
+                    render: function(data, type, row) {
+                        if(type === "sort" || type === "type") {
+                            return data;
+                        }
+                        return new Date((data * 1000)).toISOString().slice(0, 19).replace('T', ' ');
+                    },
+                    className: 'text-end'
+                },
+                {
+                    data: 'scenario'
+                },
+                { 
+                    data: 'group',
+                    render: function(data, type, row) {
+                        return (data === '' || null || undefined) ? 'Default' : data.replace('::', '')
+                    }
+                },
+                { 
+                    data: 'name' 
+                },
+                { 
+                    data: 'metric_value',
+                    render: function (data, type, row) {
+                        return Number(data).toFixed(2);
+                    },
+                    className: 'text-end'
+                },
+                { 
+                    data: 'expected_response',
+                    render: function (data, type, row) {
+                        if (data === 'true') {
+                            return '<span class="badge text-bg-success">Pass</span>';
+                        }
+                        else {
+                            return '<span class="badge text-bg-danger">Fail</span>';
+                        }
+                    }
+                }
+            ],       
+            language: {
+                paginate: {
+                    next: '&#8594;',
+                    previous: '&#8592;'
+                }
+            },
+            buttons: [
+                {
+                    extend: 'csv',
+                    split: [ 'pdf', 'excel'],
+                }
+            ],        
+            order: [[1, 'asc']]
+        });
+        transactionsTable.buttons().container().appendTo( '#transactionsList_wrapper .col-md-6:eq(0)');    
+        transactionsTable.on('click', 'td.dt-control', function (e) {
+            let tr = e.target.closest('tr');
+            let row = transactionsTable.row(tr);
+            if (row.child.isShown()) {
+                row.child.hide();
+            }
+            else {
+                row.child(displayRowDetails(row.data())).show();
+            }
+        });
+        function displayRowDetails(data) {
+            return (
+                '<table class="table table-bordered"><thead><tr><th>Method</th><th>HTTP Status</th><th>Protocol</th>' +
+                '<th>Service</th><th>Sub Protocol</th><th>TLS Version</th><th>URL</th><th>Extra Tags</th><th>Error</th>' +
+                '<th>Error Code</th><th>Metadata</th></tr></thead><tbody><tr>' +
+                '<td>' + data.method + '</td>' + '<td>' + data.status + '</td>' + '<td>' + data.proto + '</td>' + 
+                '<td>' + data.service + '</td>' + '<td>' + data.subproto + '</td>' + '<td>' + data.tls_version + '</td>' + 
+                '<td>' + data.url + '</td>' + '<td>' + data.extra_tags + '</td>' + '<td>' + data.error + '</td>' + 
+                '<td>' + data.error_code + '</td>' + '<td>' + data.metadata + '</td>' + 
+                '</tr></tbody></table>'
+            );
+        }
+        
+        // Transaction request records table
+        let transactionRecordsTable = new DataTable('#transactionRecordsList', {
+            data: [{"timestamp":"1720813788","scenario":"default","group":"Default","name":"http://test.k6.io","expected_response":"true","http_req_duration":"237.356100","http_req_blocked":"330.563300","http_req_connecting":"239.475200","http_req_tls_handshaking":"0.000000","http_req_sending":"0.502100","http_req_waiting":"236.854000","http_req_receiving":"0.000000","http_req_failed":"0.000000"},{"timestamp":"1720813789","scenario":"default","group":"Default","name":"https://test.k6.io/","expected_response":"true","http_req_duration":"240.570500","http_req_blocked":"495.586700","http_req_connecting":"236.663100","http_req_tls_handshaking":"258.923600","http_req_sending":"0.000000","http_req_waiting":"240.367000","http_req_receiving":"0.203500","http_req_failed":"0.000000"}],
+            responsive: true,
+            columns: [
+                { 
+                    data: 'timestamp', 
+                    render: function(data, type, row) {
+                        if(type === "sort" || type === "type") {
+                            return data;
+                        }
+                        return new Date((data * 1000)).toISOString().slice(0, 19).replace('T', ' ');
+                    },
+                    className: 'text-end'
+                },
+                {
+                    data: 'scenario'
+                },
+                { 
+                    data: 'group',
+                    render: function(data, type, row) {
+                        return (data === '' || null || undefined) ? 'Default' : data.replace('::', '')
+                    }
+                },
+                { 
+                    data: 'name' 
+                },            
+                { 
+                    data: 'expected_response',
+                    render: function (data, type, row) {
+                        if (data === 'true') {
+                            return '<span class="badge text-bg-success">Pass</span>';
+                        }
+                        else {
+                            return '<span class="badge text-bg-danger">Fail</span>';
+                        }
+                    }
+                },
+                { 
+                    data: 'http_req_duration',
+                    render: function (data, type, row) {
+                        return Number(data).toFixed(2);
+                    },
+                    className: 'text-end'
+                },
+                { 
+                    data: 'http_req_blocked',
+                    render: function (data, type, row) {
+                        return Number(data).toFixed(2);
+                    },
+                    className: 'text-end'
+                },
+                { 
+                    data: 'http_req_connecting',
+                    render: function (data, type, row) {
+                        return Number(data).toFixed(2);
+                    },
+                    className: 'text-end'
+                },
+                { 
+                    data: 'http_req_tls_handshaking',
+                    render: function (data, type, row) {
+                        return Number(data).toFixed(2);
+                    },
+                    className: 'text-end'
+                },
+                { 
+                    data: 'http_req_sending',
+                    render: function (data, type, row) {
+                        return Number(data).toFixed(2);
+                    },
+                    className: 'text-end'
+                },
+                { 
+                    data: 'http_req_waiting',
+                    render: function (data, type, row) {
+                        return Number(data).toFixed(2);
+                    },
+                    className: 'text-end'
+                },
+                { 
+                    data: 'http_req_receiving',
+                    render: function (data, type, row) {
+                        return Number(data).toFixed(2);
+                    },
+                    className: 'text-end'
+                },
+                { 
+                    data: 'http_req_failed',
+                    render: function (data, type, row) {
+                        return Number(data).toFixed(2);
+                    },
+                    className: 'text-end'
+                }
+            ],       
+            language: {
+                paginate: {
+                    next: '&#8594;',
+                    previous: '&#8592;'
+                }
+            },
+            buttons: [
+                {
+                    extend: 'csv',
+                    split: [ 'pdf', 'excel'],
+                }
+            ],        
+            order: [[0, 'asc']]
+        });
+        transactionRecordsTable.buttons().container().appendTo( '#transactionRecordsList_wrapper .col-md-6:eq(0)');  
+        
+        // Define colour palette to be used by the charts
+        const colourPalette = JSON.parse(JSON.stringify(["#9ACD32","#FA8072","#7FFFD4","#FFE4C4","#000000","#0000FF","#8A2BE2","#A52A2A","#DEB887","#5F9EA0","#7FFF00","#D2691E","#6495ED","#DC143C","#00FFFF","#00008B","#008B8B","#B8860B","#A9A9A9","#FF7F50","#A9A9A9","#006400","#BDB76B","#8B008B","#556B2F","#FF8C00","#9932CC","#8B0000","#E9967A","#8FBC8F","#483D8B","#228B22","#2F4F4F","#00CED1","#9400D3","#FF1493","#00BFFF","#696969","#1E90FF","#B22222","#228B22","#FF00FF","#FFD700","#808080","#008000","#ADFF2F","#FF69B4","#CD5C5C","#4B0082","#F0E68C","#7CFC00","#FFFACD","#ADD8E6","#F08080","#E0FFFF","#DAA520","#D3D3D3","#90EE90","#FFB6C1","#FFA07A","#20B2AA","#87CEFA","#778899","#B0C4DE","#00FF00","#FF00FF","#800000","#66CDAA","#0000CD","#BA55D3","#9370DB","#3CB371","#7B68EE","#00FA9A","#48D1CC","#C71585","#191970","#FFE4B5","#32CD32","#FFDEAD","#000080","#808000","#FF4500","#6B8E23","#FFA500","#DA70D6","#EEE8AA","#98FB98","#AFEEEE","#DB7093","#FFEFD5","#FFDAB9","#CD853F","#FFC0CB","#DDA0DD","#B0E0E6","#800080","#663399","#FF0000","#BC8F8F","#4169E1","#8B4513","#F4A460","#2E8B57","#A0522D","#C0C0C0","#87CEEB","#6A5ACD","#708090","#00FF7F","#4682B4","#D2B48C","#008080","#D8BFD8","#FF6347","#40E0D0","#EE82EE","#F5DEB3","#FFFF00","#ED84B2","#0057E7","#FFA700","#96CEB4","#FF6F69","#008744","#FF4D00","#84B68D","#D9856C","#B480FF","#FFB000","#FFC9C9","#FF00BF","#815454","#704684","#83917A","#A2BCBD","#9784A4","#C26F60","#DC8965","#A3546E","#D6B7b5","#B71000","#2A596C","#722F37","#D406E3","#B5333C","#741B47","#540099","#4DB399","#FFCC5C","#88D8B0","#D9534F","#428BCA","#FF9A00","#FF7400","#6E99CA","#6B327C","#6874AC","#A4BD47","#DCBC81","#AA0000","#966766"]));
+    
+        // Transaction response times line chart
+        let responseTimesData = JSON.parse(JSON.stringify([{"mode":"lines","name":"http://test.k6.io","type":"scatter","x":["2024-07-12 19:49:48"],"y":[237.3561]},{"mode":"lines","name":"https://test.k6.io/","type":"scatter","x":["2024-07-12 19:49:49"],"y":[240.5705]}]));
+        let responseTimesLayout = {
+            title: {
+                text: 'Transaction Response Times'
+            },
+            xaxis: {
+                title: {
+                    text: 'Timestamp'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Response Times (ms)'
+                }
+            },
+            colorway: colourPalette
+        };
+        Plotly.newPlot('responseTimesChart', responseTimesData, responseTimesLayout);
+    
+        // Transaction histogram chart
+        let histogramData = JSON.parse(JSON.stringify([{"x":[237.3561],"name":"http://test.k6.io","autobinx":false,"histnorm":"count","opacity":0.5,"type":"histogram"},{"x":[240.5705],"name":"https://test.k6.io/","autobinx":false,"histnorm":"count","opacity":0.5,"type":"histogram"}]));
+        let histogramLayout = {
+            bargap: 0.05,
+            bargroupgap: 0.2,
+            barmode: 'overlay',
+            title: 'Response Times Histogram',
+            xaxis: {
+                title: 'Response Times (ms)'
+            },
+            yaxis: {
+                title: 'Count'
+            },
+            colorway: colourPalette
+        };
+        Plotly.newPlot('histogramChart', histogramData, histogramLayout);    
+        
+        // Vusers over test duration with requests chart
+        let usersCountData = JSON.parse(JSON.stringify([{"mode":"lines","name":"VUs","type":"scatter","fill":"tonexty","x":["2024-07-12 19:49:48","2024-07-12 19:49:49"],"y":[1,1]},{"mode":"lines","name":"Requests","type":"scatter","fill":"tozeroy","x":["2024-07-12 19:49:48","2024-07-12 19:49:49"],"y":[1,1]}]));
+        let usersCountLayout = {
+            title: {
+                text: 'VUs'
+            },
+            xaxis: {
+                title: {
+                    text: 'Timestamp'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Count'
+                }
+            },
+            colorway: colourPalette
+        };
+        Plotly.newPlot('usersCountChart', usersCountData, usersCountLayout);
+        
+        // Data sent and received for test duration chart
+        let dataSentReceivedData = JSON.parse(JSON.stringify([{"mode":"lines","name":"Data Sent","type":"scatter","fill":"tozeroy","x":["2024-07-12 19:49:50"],"y":[546]},{"mode":"lines","name":"Data Received","type":"scatter","fill":"tonexty","x":["2024-07-12 19:49:50"],"y":[17310]}]));
+        let dataSentReceivedLayout = {
+            title: {
+                text: 'Transfer Rate'
+            },
+            xaxis: {
+                title: {
+                    text: 'Timestamp'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Bytes/Sec'
+                }
+            },
+            colorway: colourPalette
+        };
+        Plotly.newPlot('dataSentReceivedChart', dataSentReceivedData, dataSentReceivedLayout);
+        
+        // Total requests over test duration chart
+        let httpRequestsData = JSON.parse(JSON.stringify([{"mode":"lines","name":"http_req_duration","type":"scatter","x":["2024-07-12 19:49:48","2024-07-12 19:49:49"],"y":[237.3561,240.5705]},{"mode":"lines","name":"http_req_blocked","type":"scatter","x":["2024-07-12 19:49:48","2024-07-12 19:49:49"],"y":[330.5633,495.5867]},{"mode":"lines","name":"http_req_connecting","type":"scatter","x":["2024-07-12 19:49:48","2024-07-12 19:49:49"],"y":[239.4752,236.6631]},{"mode":"lines","name":"http_req_tls_handshaking","type":"scatter","x":["2024-07-12 19:49:48","2024-07-12 19:49:49"],"y":[0,258.9236]},{"mode":"lines","name":"http_req_sending","type":"scatter","x":["2024-07-12 19:49:48","2024-07-12 19:49:49"],"y":[0.5021,0]},{"mode":"lines","name":"http_req_waiting","type":"scatter","x":["2024-07-12 19:49:48","2024-07-12 19:49:49"],"y":[236.854,240.367]},{"mode":"lines","name":"http_req_receiving","type":"scatter","x":["2024-07-12 19:49:48","2024-07-12 19:49:49"],"y":[0,0.2035]},{"mode":"lines","name":"http_req_failed","type":"scatter","x":["2024-07-12 19:49:48","2024-07-12 19:49:49"],"y":[0,0]}]));
+        let httpRequestsLayout = {
+            title: {
+                text: 'HTTP Requests'
+            },
+            xaxis: {
+                title: {
+                    text: 'Timestamp'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Response Times (ms)'
+                }
+            },
+            colorway: colourPalette
+        };
+        Plotly.newPlot('httpRequestsChart', httpRequestsData, httpRequestsLayout);
+        
+        // Transaction percentage chart
+        let txnPercentageData = [{
+            type: 'pie',
+            values: [2, 0],
+            labels: ['Pass', 'Fail']      
+        }];
+        let txnPercentageLayout = {
+            title: 'Transaction Percentage',
+            colorway: colourPalette
+        };
+        Plotly.newPlot('txnPercentageChart', txnPercentageData, txnPercentageLayout);
+        
+        // HTTP status percentage chart
+        let httpStatusPercentageData = [{"type":"pie","values":[1,1],"labels":["308 - Permanent Redirect","200 - OK"]}];
+        let httpStatusPercentageLayout = {
+            title: 'HTTP Status Percentage',
+            colorway: colourPalette
+        };
+        Plotly.newPlot('httpStatusPercentageChart', httpStatusPercentageData, httpStatusPercentageLayout);
+    </script>
+</body>
+</html>
